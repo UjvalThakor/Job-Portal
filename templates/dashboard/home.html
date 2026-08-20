@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}HR Dashboard{% endblock %}
+{% block content %}
+<h3 class="mb-4">HR Dashboard</h3>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3 col-6">
+    <div class="card stat-card p-3 text-center">
+      <small class="text-muted">Candidates</small>
+      <h2>{{ stats.total_candidates }}</h2>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card stat-card p-3 text-center">
+      <small class="text-muted">Resumes Processed</small>
+      <h2>{{ stats.total_resumes }}</h2>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card stat-card p-3 text-center">
+      <small class="text-muted">Open Jobs</small>
+      <h2>{{ stats.total_jobs }}</h2>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card stat-card p-3 text-center">
+      <small class="text-muted">Analyses Run</small>
+      <h2>{{ stats.total_analyses }}</h2>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3 col-6">
+    <div class="card p-3">
+      <small class="text-muted">Avg ATS Score</small>
+      <h4>{{ stats.avg_ats_score|floatformat:1 }}</h4>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card p-3">
+      <small class="text-muted">Avg Match Score</small>
+      <h4>{{ stats.avg_match_score|floatformat:1 }}</h4>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card p-3">
+      <small class="text-muted">OCR Fallback Used</small>
+      <h4>{{ stats.ocr_resumes }}</h4>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="card p-3">
+      <small class="text-muted">Failed Resumes</small>
+      <h4>{{ stats.failed_resumes }}</h4>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card p-3">
+      <h5>Top Ranked Candidates</h5>
+      {% if top_candidates %}
+      <table class="table table-sm align-middle">
+        <thead><tr><th>Candidate</th><th>Job</th><th>Match</th></tr></thead>
+        <tbody>
+        {% for a in top_candidates %}
+          <tr>
+            <td><a href="{% url 'candidates:detail' a.candidate.pk %}">{{ a.candidate.full_name|default:a.candidate }}</a></td>
+            <td><a href="{% url 'jobs:detail' a.job.pk %}">{{ a.job.title }}</a></td>
+            <td><span class="score-badge {% if a.match_score >= 70 %}score-high{% elif a.match_score >= 40 %}score-mid{% else %}score-low{% endif %}">{{ a.match_score }}%</span></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <p class="text-muted">No analyses yet. Upload resumes and create a job to get started.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card p-3 mb-3">
+      <h5>Recent Job Postings</h5>
+      {% if recent_jobs %}
+        <ul class="list-group list-group-flush">
+        {% for job in recent_jobs %}
+          <li class="list-group-item d-flex justify-content-between">
+            <a href="{% url 'jobs:detail' job.pk %}">{{ job.title }}</a>
+            <span class="badge bg-secondary">{{ job.n }} analyzed</span>
+          </li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-muted">No jobs posted yet. <a href="{% url 'jobs:create' %}">Create one</a>.</p>
+      {% endif %}
+    </div>
+
+    <div class="card p-3">
+      <h5>Recently Uploaded Resumes</h5>
+      {% if recent_resumes %}
+        <ul class="list-group list-group-flush">
+        {% for r in recent_resumes %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span>{{ r.original_filename }}</span>
+            <span class="badge {% if r.status == 'extracted' or r.status == 'analyzed' %}bg-success{% elif r.status == 'failed' %}bg-danger{% else %}bg-secondary{% endif %}">{{ r.get_status_display }}</span>
+          </li>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-muted">No resumes uploaded yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

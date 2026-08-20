@@ -1,0 +1,686 @@
+/* ==========================================================================
+   Pure White Modern Job Portal UI (Mobile Responsive + Indeed Split View)
+   ========================================================================== */
+
+:root {
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-bg: #10b981;
+  --secondary: #2563eb;
+  --accent: #7c3aed;
+  --background: #ffffff;
+  --surface: #ffffff;
+  --surface-card: #ffffff;
+  --surface-hover: #f9fafb;
+  --input-bg: #ffffff;
+  --border: #e5e7eb;
+  --border-active: #059669;
+
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-sub: #6b7280;
+
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', -apple-system, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f3f4f6; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* Navigation Bar (Pure White) */
+.portal-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  width: 100%;
+}
+
+.navbar-wrapper {
+  max-width: 1540px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  white-space: nowrap;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.brand-badge {
+  background: var(--primary-bg);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+}
+
+.nav-link-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-main);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.nav-link-btn:hover {
+  color: var(--text-primary);
+  background: #f3f4f6;
+}
+
+.nav-link-btn.active {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Header Right Actions - UNIFORM HEIGHT & SIZE FOR ALL 3 BUTTONS */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.user-profile-badge,
+.navbar-actions .btn-primary,
+.navbar-actions .btn-secondary {
+  height: 40px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.2rem;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.user-profile-badge {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  padding: 0 0.95rem 0 0.35rem;
+  gap: 0.55rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.user-profile-badge:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.user-avatar-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.user-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+}
+
+.user-name-text {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #111827;
+}
+
+/* Primary Action Buttons (GREEN GRADIENT PILL) */
+.btn-primary {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  height: 40px;
+  padding: 0 1.4rem !important;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+  transition: var(--transition);
+  outline: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #059669, #047857) !important;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: #ffffff !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 9999px !important;
+  height: 40px;
+  padding: 0 1.25rem !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  transition: var(--transition);
+  outline: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.btn-secondary:hover {
+  background: #f9fafb !important;
+  border-color: #9ca3af !important;
+  color: var(--text-primary) !important;
+}
+
+/* Applied Status Pill Badge */
+.btn-applied {
+  background: #ecfdf5 !important;
+  color: #065f46 !important;
+  border: 1.5px solid #10b981 !important;
+  border-radius: 9999px !important;
+  height: 40px;
+  padding: 0 1.4rem !important;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: default;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.18);
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* Search Bar (Indeed Style Pill Bar) */
+.indeed-search-container {
+  background: #ffffff;
+  padding: 1.5rem 1rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.indeed-search-box {
+  max-width: 980px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 2px solid #111827;
+  border-radius: 9999px;
+  padding: 0.35rem 0.45rem 0.35rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.indeed-search-box .btn-primary {
+  border-radius: 9999px !important;
+  height: 44px;
+  padding: 0 1.85rem !important;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  flex-shrink: 0;
+}
+
+.indeed-search-box .btn-primary:hover {
+  background: linear-gradient(135deg, #059669, #047857) !important;
+}
+
+.search-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0.5rem;
+  position: relative;
+}
+
+.search-field i {
+  color: #4b5563;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.search-input-field {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  padding: 0.5rem 0;
+}
+
+.search-input-field:focus {
+  outline: none;
+}
+
+.search-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+}
+
+/* SEARCH AUTOCOMPLETE SUGGESTIONS DROPDOWN */
+.search-suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 8px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  z-index: 500;
+  overflow: hidden;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 0.75rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: #111827;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.suggestion-item:hover {
+  background: #f3f4f6;
+  color: var(--primary-bg);
+}
+
+.suggestion-item i {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+/* Popular Tag Pills */
+.filter-pills-row {
+  max-width: 1400px;
+  margin: 1rem auto 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tag-pill {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.83rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.tag-pill:hover {
+  border-color: #111827;
+  color: #111827;
+}
+
+.tag-pill.active {
+  background: #111827;
+  color: #ffffff;
+  border-color: #111827;
+  font-weight: 600;
+}
+
+/* SPLIT MASTER-DETAIL LAYOUT (INDEED STYLE) */
+.indeed-split-layout {
+  max-width: 1540px;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  gap: 1.75rem;
+}
+
+.master-job-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.indeed-job-card {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.indeed-job-card:hover {
+  border-color: #9ca3af;
+  box-shadow: var(--shadow-sm);
+}
+
+.indeed-job-card.active {
+  border: 2px solid var(--primary-bg);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
+}
+
+.detail-sticky-panel {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  height: fit-content;
+  position: sticky;
+  top: 5rem;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-card);
+}
+
+/* Badges & Tags (Fully Rounded Pills) */
+.badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.85rem;
+  border-radius: 9999px !important;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 0.35rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.badge-easy-apply { 
+  background: #eff6ff !important; 
+  color: #1d4ed8 !important; 
+  border: 1px solid #bfdbfe !important; 
+}
+
+.badge-urgent { 
+  background: #fef2f2 !important; 
+  color: #b91c1c !important; 
+  border: 1px solid #fecaca !important; 
+}
+
+.badge-green { 
+  background: #ecfdf5 !important; 
+  color: #065f46 !important; 
+  border: 1px solid #a7f3d0 !important; 
+}
+
+/* Skills Container (Fully Rounded Pills) */
+.skills-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.75rem 0;
+}
+
+.skill-tag {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px !important;
+  font-family: var(--font-main);
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.skill-tag.matched {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #065f46;
+  font-weight: 700;
+}
+
+.skill-tag.more-pill {
+  background: #ffffff;
+  border: 1px dashed #9ca3af;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.skill-tag.more-pill:hover {
+  background: #f3f4f6;
+  border-color: #111827;
+  color: #111827;
+}
+
+/* Modals */
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-container {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  max-width: 620px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.form-group { margin-bottom: 1.15rem; }
+
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.form-input {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.95rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-bg);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+}
+
+/* Toast Container */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.toast-item {
+  background: #ffffff;
+  border: 1px solid var(--primary-bg);
+  color: var(--text-primary);
+  padding: 0.9rem 1.4rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* MOBILE RESPONSIVE BREAKPOINTS */
+@media (max-width: 992px) {
+  .portal-navbar { padding: 0.6rem 1rem; }
+  .navbar-wrapper { flex-wrap: wrap; gap: 0.75rem; }
+  .nav-links { overflow-x: auto; max-width: 100%; padding-bottom: 0.2rem; }
+  .indeed-split-layout { grid-template-columns: 1fr; padding: 0 1rem; margin: 1rem auto; }
+  .detail-sticky-panel { position: relative; top: 0; max-height: none; }
+}
+
+@media (max-width: 768px) {
+  .portal-navbar { padding: 0.5rem 0.85rem; }
+  .brand-logo { font-size: 1.15rem; }
+  .brand-badge { width: 32px; height: 32px; font-size: 0.95rem; }
+  .user-profile-badge, .navbar-actions .btn-primary, .navbar-actions .btn-secondary { height: 36px; padding: 0 0.85rem; font-size: 0.8rem; }
+  .indeed-search-container { padding: 1rem 0.85rem; }
+  .indeed-search-box {
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+  .search-field { width: 100%; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+  .search-field:last-of-type { border-bottom: none; }
+  .search-divider { display: none; }
+  .indeed-search-box .btn-primary { width: 100%; justify-content: center; padding: 0.75rem; }
+  .filter-pills-row { margin-top: 0.75rem; padding-bottom: 0.4rem; }
+  .tag-pill { padding: 0.35rem 0.85rem; font-size: 0.78rem; }
+  .detail-sticky-panel { padding: 1.25rem; border-radius: var(--radius-sm); }
+  .indeed-job-card { padding: 1rem; }
+  .modal-container { margin: 0 0.5rem; max-height: 95vh; }
+  .modal-header { padding: 1rem; }
+  .modal-body { padding: 1rem; }
+}

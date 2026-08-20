@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{{ candidate.full_name|default:"Candidate" }}{% endblock %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-lg-4">
+    <div class="card p-3 mb-3">
+      <h5>Contact Info</h5>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-2"><label class="form-label small text-muted">Name</label>{{ form.full_name }}</div>
+        <div class="mb-2"><label class="form-label small text-muted">Email</label>{{ form.email }}</div>
+        <div class="mb-2"><label class="form-label small text-muted">Phone</label>{{ form.phone }}</div>
+        <div class="mb-2"><label class="form-label small text-muted">Address</label>{{ form.address }}</div>
+        <button class="btn btn-sm btn-primary mt-2">Save</button>
+      </form>
+    </div>
+
+    <div class="card p-3 mb-3">
+      <h5>Skills</h5>
+      {% for s in candidate.skills %}<span class="skill-chip">{{ s }}</span>{% empty %}<p class="text-muted">None detected</p>{% endfor %}
+    </div>
+
+    <div class="card p-3 mb-3">
+      <h5>Languages</h5>
+      {% for l in candidate.languages %}<span class="skill-chip">{{ l }}</span>{% empty %}<p class="text-muted">None detected</p>{% endfor %}
+    </div>
+
+    <div class="card p-3">
+      <h5>Uploaded Resumes</h5>
+      <ul class="list-unstyled">
+      {% for r in resumes %}
+        <li class="mb-1">
+          <a href="{{ r.file.url }}" target="_blank">{{ r.original_filename }}</a>
+          <span class="badge bg-light text-dark">{{ r.get_status_display }}</span>
+          {% if r.ocr_used %}<span class="badge bg-info">OCR</span>{% endif %}
+        </li>
+      {% empty %}<li class="text-muted">No resumes</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <div class="card p-3 mb-3">
+      <h5>Education</h5>
+      {% for e in candidate.education %}
+        <div class="border-bottom py-1">{{ e.degree }} {% if e.year %}<span class="text-muted">({{ e.year }})</span>{% endif %}</div>
+      {% empty %}<p class="text-muted">None detected</p>{% endfor %}
+    </div>
+
+    <div class="card p-3 mb-3">
+      <h5>Certifications</h5>
+      {% for c in candidate.certifications %}<div class="border-bottom py-1">{{ c }}</div>{% empty %}<p class="text-muted">None detected</p>{% endfor %}
+    </div>
+
+    <div class="card p-3 mb-3">
+      <h5>Projects</h5>
+      {% for p in candidate.projects %}<div class="border-bottom py-1">{{ p }}</div>{% empty %}<p class="text-muted">None detected</p>{% endfor %}
+    </div>
+
+    <div class="card p-3">
+      <h5>Job Analyses ({{ analyses|length }})</h5>
+      <table class="table table-sm">
+        <thead><tr><th>Job</th><th>ATS Score</th><th>Match Score</th><th></th></tr></thead>
+        <tbody>
+        {% for a in analyses %}
+          <tr>
+            <td>{{ a.job.title }}</td>
+            <td>{{ a.ats_score }}</td>
+            <td><span class="score-badge {% if a.match_score >= 70 %}score-high{% elif a.match_score >= 40 %}score-mid{% else %}score-low{% endif %}">{{ a.match_score }}%</span></td>
+            <td><a href="{% url 'jobs:analysis_detail' a.pk %}" class="btn btn-sm btn-outline-secondary">Details</a></td>
+          </tr>
+        {% empty %}<tr><td colspan="4" class="text-muted">Not analyzed against any job yet.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

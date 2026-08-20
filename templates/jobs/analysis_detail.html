@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Analysis: {{ analysis.candidate }} x {{ analysis.job.title }}{% endblock %}
+{% block content %}
+<h4>{{ analysis.candidate.full_name|default:analysis.candidate }} <span class="text-muted">vs</span> {{ analysis.job.title }}</h4>
+<p class="text-muted small">Analyzed via: {{ analysis.get_analyzer_source_display|default:analysis.analyzer_source }}</p>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-4">
+    <div class="card p-3 text-center">
+      <small class="text-muted">Match Score</small>
+      <h2>{{ analysis.match_score }}%</h2>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3 text-center">
+      <small class="text-muted">ATS Score</small>
+      <h2>{{ analysis.ats_score }}</h2>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3 text-center">
+      <small class="text-muted">Experience</small>
+      <h2>{{ analysis.candidate.total_experience_years }} yrs</h2>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-6">
+    <div class="card p-3">
+      <h5>Matched Skills</h5>
+      {% for s in analysis.matched_skills %}<span class="skill-chip">{{ s }}</span>{% empty %}<p class="text-muted">None</p>{% endfor %}
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card p-3">
+      <h5>Skill Gap (Missing)</h5>
+      {% for s in analysis.missing_skills %}<span class="skill-chip missing">{{ s }}</span>{% empty %}<p class="text-muted">None - fully covered!</p>{% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="card p-3 mb-3">
+  <h5>AI Summary</h5>
+  <p>{{ analysis.summary }}</p>
+  {% if analysis.strengths %}
+    <h6 class="mt-3">Strengths</h6>
+    <ul>{% for s in analysis.strengths %}<li>{{ s }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if analysis.concerns %}
+    <h6 class="mt-3">Concerns</h6>
+    <ul>{% for c in analysis.concerns %}<li>{{ c }}</li>{% endfor %}</ul>
+  {% endif %}
+</div>
+
+<div class="card p-3">
+  <h5>Suggested Interview Questions</h5>
+  {% regroup questions by get_category_display as category_list %}
+  {% for cat in category_list %}
+    <h6 class="text-muted mt-2">{{ cat.grouper }}</h6>
+    <ol>
+    {% for q in cat.list %}
+      <li class="mb-2">{{ q.question }}
+        {% if q.rationale %}<div class="small text-muted">{{ q.rationale }}</div>{% endif %}
+      </li>
+    {% endfor %}
+    </ol>
+  {% empty %}
+    <p class="text-muted">No questions generated.</p>
+  {% endfor %}
+</div>
+{% endblock %}

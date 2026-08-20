@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ job.title }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <div>
+    <h4>{{ job.title }} <span class="text-muted small">{{ job.department }}</span></h4>
+    <p>{{ job.description|linebreaksbr }}</p>
+    <div>
+      {% for s in job.required_skills %}<span class="skill-chip">{{ s }}</span>{% endfor %}
+      {% for s in job.preferred_skills %}<span class="skill-chip" style="opacity:.6">{{ s }} (pref)</span>{% endfor %}
+    </div>
+    <p class="mt-2 small text-muted">Min. experience: {{ job.min_experience_years }} yrs</p>
+  </div>
+  <a href="{% url 'jobs:edit' job.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+</div>
+
+<div class="card p-3 mb-3">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="mb-0">Candidate Ranking</h5>
+    {% if unanalyzed %}
+    <form method="post" action="{% url 'jobs:analyze_all' job.pk %}">
+      {% csrf_token %}
+      <button class="btn btn-sm btn-primary">Analyze All Unranked ({{ unanalyzed|length }})</button>
+    </form>
+    {% endif %}
+  </div>
+  <table class="table align-middle">
+    <thead><tr><th>#</th><th>Candidate</th><th>Match Score</th><th>ATS Score</th><th>Matched Skills</th><th></th></tr></thead>
+    <tbody>
+    {% for a in ranked %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="{% url 'candidates:detail' a.candidate.pk %}">{{ a.candidate.full_name|default:a.candidate }}</a></td>
+        <td><span class="score-badge {% if a.match_score >= 70 %}score-high{% elif a.match_score >= 40 %}score-mid{% else %}score-low{% endif %}">{{ a.match_score }}%</span></td>
+        <td>{{ a.ats_score }}</td>
+        <td>{% for s in a.matched_skills|slice:":4" %}<span class="skill-chip">{{ s }}</span>{% endfor %}</td>
+        <td><a href="{% url 'jobs:analysis_detail' a.pk %}" class="btn btn-sm btn-outline-secondary">Details</a></td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6" class="text-muted text-center py-3">No candidates analyzed yet.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if unanalyzed %}
+<div class="card p-3">
+  <h5>Candidates Not Yet Analyzed</h5>
+  <table class="table table-sm">
+    <tbody>
+    {% for c in unanalyzed %}
+      <tr>
+        <td>{{ c.full_name|default:c }}</td>
+        <td>{% for s in c.skills|slice:":5" %}<span class="skill-chip">{{ s }}</span>{% endfor %}</td>
+        <td class="text-end">
+          <form method="post" action="{% url 'jobs:analyze_candidate' job.pk c.pk %}">
+            {% csrf_token %}
+            <button class="btn btn-sm btn-primary">Analyze</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

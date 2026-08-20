@@ -1,0 +1,15 @@
+Django>=5.0,<6.0
+pdfplumber>=0.11
+python-docx>=1.1
+PyMuPDF>=1.24
+pytesseract>=0.3.10
+opencv-python-headless>=4.9
+Pillow>=10.0
+scikit-learn>=1.4
+numpy>=1.26
+requests>=2.31
+python-dotenv>=1.0
+
+# Optional, only needed if you enable real virus scanning (see
+# candidates/services/validation.py::ClamAVScanner)
+# clamd>=1.0.2

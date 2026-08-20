@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{% if is_edit %}Edit Job{% else %}New Job{% endif %}{% endblock %}
+{% block content %}
+<div class="card p-4" style="max-width:700px;margin:0 auto;">
+  <h4 class="mb-3">{% if is_edit %}Edit Job Description{% else %}New Job Description{% endif %}</h4>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3"><label class="form-label">Title</label>{{ form.title }}</div>
+    <div class="mb-3"><label class="form-label">Department</label>{{ form.department }}</div>
+    <div class="mb-3"><label class="form-label">Description</label>{{ form.description }}</div>
+    <div class="mb-3"><label class="form-label">Required Skills</label>{{ form.required_skills }}
+      <div class="form-text">{{ form.required_skills.help_text }}</div>
+    </div>
+    <div class="mb-3"><label class="form-label">Preferred Skills</label>{{ form.preferred_skills }}
+      <div class="form-text">{{ form.preferred_skills.help_text }}</div>
+    </div>
+    <div class="mb-3"><label class="form-label">Minimum Experience (years)</label>{{ form.min_experience_years }}</div>
+    <button class="btn btn-primary">Save Job</button>
+  </form>
+</div>
+{% endblock %}
