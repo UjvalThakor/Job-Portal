@@ -9,6 +9,8 @@ scikit-learn>=1.4
 numpy>=1.26
 requests>=2.31
 python-dotenv>=1.0
+gunicorn>=21.2.0
+whitenoise>=6.6.0
 
 # Optional, only needed if you enable real virus scanning (see
 # candidates/services/validation.py::ClamAVScanner)

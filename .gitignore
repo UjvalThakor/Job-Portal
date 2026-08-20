@@ -8,6 +8,8 @@ env/
 .idea/
 .vscode/
 *.log
+staticfiles/
 media/resumes/*
 !media/resumes/.gitkeep
+
 
